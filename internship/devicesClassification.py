@@ -1,6 +1,12 @@
 #########################################################################
 # Prices Classification of Devices Based on its SPecs 
 # author: Ahmed Muhammed Abdelgaber
+#-----------------------------------------------------------
+# why i have choose svm with linear kernel for classification ? 
+#-----------------------------------------------------------
+# 1. perform well at classification non linear proble 
+# 2. optimize margine can help reduce overfitting of data 
+# 3. perform well on data sets have many attributes 
 ##########################################################################
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
@@ -47,15 +53,15 @@ X_test = scaler.transform(X_test)
 svc=SVC(kernel='linear', degree=3, random_state=0) 
                                                         # fit classifier to training set
 svc.fit(X_train,y_train)
-test_data_values = test_data.values                                                        # make predictions on test set
+test_data_values = test_data.values                     # make predictions on test set
 reshaped_test_data = test_data_values.reshape((-1,20))
 y_pred=svc.predict(X_test)  
 print(classification_report(y_test, y_pred, labels=[0, 1, 2, 3]))
 # Prediction for first 10 devices 
 y_pred10 = svc.predict(reshaped_test_data[:10])
 y_pred10 = map(lambda x: target_labels[x], y_pred10)
-# confussion matrix 
-cm = confusion_matrix(y_test, y_pred, labels=svc.classes_)
+
+cm = confusion_matrix(y_test, y_pred, labels=svc.classes_)  # confussion matrix 
 disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=svc.classes_)
 print('Model accuracy score with rbf kernel: {0:0.4f}'. format(accuracy_score(y_test, y_pred))) # compute and print accuracy score
 print("first 10 devices test :", list(y_pred10))
